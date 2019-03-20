@@ -88,8 +88,8 @@ def predict_price(dates, prices, x):
 
 	# Finally, we create one more SVR using a radial basis function. RBF defines similarity to be the eucledian distance between two inputs
 	# If both are right on top of each other, the max similarity is one, if too far it is a ze
-	svr_lin = SVR(kernel= 'linear', C= 1e3) # 1e3 denotes 1000
-	svr_poly = SVR(kernel= 'poly', C= 1e3, degree= 2)
+	svr_lin = SVR(kernel= 'linear', C= 1e3, gamma = 'auto') # 1e3 denotes 1000
+	svr_poly = SVR(kernel= 'poly', C= 1e3, degree= 2, gamma = 'auto')
 	svr_rbf = SVR(kernel= 'rbf', C= 1e3, gamma= 0.1) # defining the support vector regression models
 	
 	svr_rbf.fit(dates, prices) # fitting the data points in the models
@@ -112,7 +112,7 @@ def predict_price(dates, prices, x):
 	plt.legend() # Add legend
 	plt.show() # To display result on screen
 
-	return svr_rbf.predict(x)[0], svr_lin.predict(x)[0], svr_poly.predict(x)[0] # returns predictions from each of our models
+	return svr_rbf.predict(np.arange(x).reshape(-1,1))[0], svr_lin.predict(np.arange(x).reshape(-1,1))[0], svr_poly.predict(np.arange(x).reshape(-1,1))[0] # returns predictions from each of our models
 
 get_data('snap.csv') # calling get_data method by passing the csv file to it
 
